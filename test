@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Menü</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            background-image: url('speisekarte1.png'); /* Das hochgeladene Bild */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container {
+            width: 90%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Leicht transparente weiße Box, damit der Text lesbar ist */
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            color: #1b5e20; /* Dunkles Grün */
+            margin-bottom: 40px;
+        }
+
+        .filters {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .filters label {
+            margin-right: 20px;
+            font-size: 1.2rem;
+            color: #004d40; /* Dunkles Blaugrün */
+        }
+
+        .filters input {
+            margin-right: 10px;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .menu-item {
+            background-color: #ffffff;
+            border: 2px solid #004d40; /* Dunkles Blaugrün */
+            padding: 20px;
+            width: 30%;
+            margin: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .menu-item h3 {
+            color: #1b5e20; /* Dunkles Grün */
+            font-size: 1.8rem;
+        }
+
+        .menu-item p {
+            color: #004d40; /* Dunkles Blaugrün */
+            font-size: 1.1rem;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #004d40; /* Dunkles Blaugrün */
+            color: white;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .menu-item {
+                width: 90%;
+            }
+
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .filters label {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Unser Menü</h1>
+
+        <div class="filters">
+            <label><input type="checkbox" id="vegetarisch" /> Vegetarisch</label>
+            <label><input type="checkbox" id="vegan" /> Vegan</label>
+            <label><input type="checkbox" id="keinSchweinefleisch" /> Kein Schweinefleisch</label>
+        </div>
+
+        <div class="menu">
+            <!-- Beispielgerichte -->
+            <div class="menu-item" data-vegetarisch="true" data-vegan="true" data-keinSchweinefleisch="true">
+                <h3>Vegane Gemüsesuppe</h3>
+                <p>Zutaten: Karotten, Kartoffeln, Erbsen</p>
+            </div>
+
+            <div class="menu-item" data-vegetarisch="true" data-vegan="false" data-keinSchweinefleisch="true">
+                <h3>Vegetarische Lasagne</h3>
+                <p>Zutaten: Nudeln, Käse, Tomatensauce</p>
+            </div>
+
+            <div class="menu-item" data-vegetarisch="false" data-vegan="false" data-keinSchweinefleisch="false">
+                <h3>Schweineschnitzel mit Pommes</h3>
+                <p>Zutaten: Schweinefleisch, Kartoffeln, Panade</p>
+            </div>
+
+            <div class="menu-item" data-vegetarisch="true" data-vegan="false" data-keinSchweinefleisch="true">
+                <h3>Käsespätzle</h3>
+                <p>Zutaten: Mehl, Käse, Zwiebeln</p>
+            </div>
+
+            <div class="menu-item" data-vegetarisch="false" data-vegan="false" data-keinSchweinefleisch="true">
+                <h3>Hähnchenbrust mit Reis</h3>
+                <p>Zutaten: Hähnchenfleisch, Reis, Gemüse</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 Dein Restaurant. Alle Rechte vorbehalten.</p>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.filters input').forEach(filter => {
+            filter.addEventListener('change', filterMenu);
+        });
+
+        function filterMenu() {
+            const vegetarisch = document.getElementById('vegetarisch').checked;
+            const vegan = document.getElementById('vegan').checked;
+            const keinSchweinefleisch = document.getElementById('keinSchweinefleisch').checked;
+
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const isVegetarisch = item.getAttribute('data-vegetarisch') === 'true';
+                const isVegan = item.getAttribute('data-vegan') === 'true';
+                const isKeinSchweinefleisch = item.getAttribute('data-keinSchweinefleisch') === 'true';
+
+                let visible = true;
+
+                if (vegetarisch && !isVegetarisch) {
+                    visible = false;
+                }
+
+                if (vegan && !isVegan) {
+                    visible = false;
+                }
+
+                if (keinSchweinefleisch && !isKeinSchweinefleisch) {
+                    visible = false;
+                }
+
+                item.classList.toggle('hidden', !visible);
+            });
+        }
+    </script>
+
+</body>
+</html>
